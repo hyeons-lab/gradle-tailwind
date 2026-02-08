@@ -24,6 +24,22 @@ abstract class TailwindInitTask @Inject constructor(
     @get:Option(option = "config", description = "The desired folder path of the `tailwind.config.js` file.")
     val configPath: Property<String> = project.objects.property(String::class.java)
 
+    @get:Input
+    @get:Option(option = "full", description = "Initialize with a full configuration file that includes all default options.")
+    val full: Property<Boolean> = project.objects.property(Boolean::class.java).convention(false)
+
+    @get:Input
+    @get:Option(option = "postcss", description = "Initialize PostCSS configuration alongside Tailwind config.")
+    val postcss: Property<Boolean> = project.objects.property(Boolean::class.java).convention(false)
+
+    @get:Input
+    @get:Option(option = "esm", description = "Generate an ESM format configuration file.")
+    val esm: Property<Boolean> = project.objects.property(Boolean::class.java).convention(false)
+
+    @get:Input
+    @get:Option(option = "ts", description = "Generate a TypeScript configuration file.")
+    val typescript: Property<Boolean> = project.objects.property(Boolean::class.java).convention(false)
+
     @TaskAction
     fun initTailwind() {
         // Validate required properties
@@ -56,11 +72,25 @@ abstract class TailwindInitTask @Inject constructor(
         val args = arrayListOf<String>()
         args += "init"
 
+        // Add user-configurable options
+        if (full.get()) {
+            args += "--full"
+        }
+        if (postcss.get()) {
+            args += "--postcss"
+        }
+        if (esm.get()) {
+            args += "--esm"
+        }
+        if (typescript.get()) {
+            args += "--ts"
+        }
+
         try {
             execOperations.exec {
                 it.workingDir = file
                 it.executable = getBinary()
-                it.args = args // TODO: add user-configurable options to the TailwindCSS `init` task.
+                it.args = args
                 // Note: Timeout would require custom implementation with Future/timeout handling
                 // For now, rely on CI/CD timeout mechanisms
             }

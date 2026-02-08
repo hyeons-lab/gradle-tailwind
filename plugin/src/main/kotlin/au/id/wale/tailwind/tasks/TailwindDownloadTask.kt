@@ -26,17 +26,23 @@ import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
+import org.gradle.process.ExecOperations
+import java.io.ByteArrayOutputStream
 import java.net.URI
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 import java.security.MessageDigest
+import javax.inject.Inject
 
 
-abstract class TailwindDownloadTask : DefaultTask() {
+abstract class TailwindDownloadTask @Inject constructor(
+    @get:Internal private val execOperations: ExecOperations
+) : DefaultTask() {
 
     init {
         description = "Downloads and caches a given TailwindCSS binary."
@@ -114,6 +120,9 @@ abstract class TailwindDownloadTask : DefaultTask() {
         if ((TailwindPlatform.platformOS == TailwindOS.LINUX) || (TailwindPlatform.platformOS == TailwindOS.MAC)) {
             getBinary().get().asFile.setExecutable(true)
         }
+
+        // Verify the binary is valid and executable
+        validateBinary(binaryPath)
     }
 
     private fun <T> downloadWithRetry(url: String, resourceName: String, downloadFn: (String) -> T): T {
@@ -168,6 +177,63 @@ abstract class TailwindDownloadTask : DefaultTask() {
     private fun validateCacheDir() {
         if (!cacheDir.isPresent) {
             throw GradleException("Cache directory is not configured")
+        }
+
+        val cacheDirPath = cacheDir.get()
+
+        // Create the cache directory if it doesn't exist
+        if (!Files.exists(cacheDirPath)) {
+            try {
+                Files.createDirectories(cacheDirPath)
+            } catch (e: Exception) {
+                throw GradleException(
+                    "Failed to create cache directory: ${cacheDirPath}\n" +
+                    "Error: ${e.message}\n" +
+                    "Please check directory permissions.",
+                    e
+                )
+            }
+        }
+
+        // Verify the cache directory is writable
+        if (!Files.isWritable(cacheDirPath)) {
+            throw GradleException(
+                "Cache directory is not writable: ${cacheDirPath}\n" +
+                "Please check directory permissions and ensure the Gradle process has write access."
+            )
+        }
+    }
+
+    private fun validateBinary(binaryPath: Path) {
+        try {
+            val output = ByteArrayOutputStream()
+            val result = execOperations.exec {
+                it.commandLine = listOf(binaryPath.toString(), "--version")
+                it.standardOutput = output
+                it.errorOutput = output
+                it.isIgnoreExitValue = true
+            }
+
+            if (result.exitValue != 0) {
+                throw GradleException(
+                    "Binary validation failed: Tailwind binary at ${binaryPath} returned exit code ${result.exitValue}\n" +
+                    "Output: ${output.toString()}\n" +
+                    "The downloaded binary may be corrupted or incompatible with your system."
+                )
+            }
+
+            val versionOutput = output.toString().trim()
+            logger.info("Binary validation passed: $versionOutput")
+        } catch (e: GradleException) {
+            // Re-throw GradleException as-is
+            throw e
+        } catch (e: Exception) {
+            throw GradleException(
+                "Failed to validate Tailwind binary at ${binaryPath}\n" +
+                "Error: ${e.message}\n" +
+                "The binary may be corrupted, not executable, or incompatible with your system.",
+                e
+            )
         }
     }
 

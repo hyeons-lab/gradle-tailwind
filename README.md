@@ -72,6 +72,11 @@ This plugin supports both Tailwind CSS v3 and v4.
 ### Available Tasks
 - `:tailwindDownload` - Downloads the TailwindCSS binary for the configured version. Automatically runs before compile/init tasks if the binary is missing. Includes SHA256 checksum verification for security.
 - `:tailwindInit` - Initialises the `tailwind.config.js` file (for Tailwind v3) with the input and output provided in the config.
+  - Options:
+    - `--full` - Initialize with a full configuration file that includes all default options
+    - `--postcss` - Initialize PostCSS configuration alongside Tailwind config
+    - `--esm` - Generate an ESM format configuration file
+    - `--ts` - Generate a TypeScript configuration file
 - `:tailwindCompile` - Compiles the given Tailwind CSS file to the path provided in `output`. Automatically downloads the binary if needed.
 
 ### Example
