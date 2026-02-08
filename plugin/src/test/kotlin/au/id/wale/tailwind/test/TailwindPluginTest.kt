@@ -28,4 +28,34 @@ class TailwindPluginTest {
 
         assert(project.tasks.getByName("tailwindInit") is TailwindInitTask)
     }
+
+    @Test
+    fun `tailwindInit task depends on tailwindDownload`() {
+        val project = ProjectBuilder.builder().build()
+        project.pluginManager.apply("au.id.wale.tailwind")
+
+        val initTask = project.tasks.getByName("tailwindInit")
+        val downloadTask = project.tasks.getByName("tailwindDownload")
+
+        assertTrue(
+            initTask.dependsOn.contains(downloadTask) ||
+            initTask.taskDependencies.getDependencies(initTask).contains(downloadTask),
+            "tailwindInit should depend on tailwindDownload"
+        )
+    }
+
+    @Test
+    fun `tailwindCompile task depends on tailwindDownload`() {
+        val project = ProjectBuilder.builder().build()
+        project.pluginManager.apply("au.id.wale.tailwind")
+
+        val compileTask = project.tasks.getByName("tailwindCompile")
+        val downloadTask = project.tasks.getByName("tailwindDownload")
+
+        assertTrue(
+            compileTask.dependsOn.contains(downloadTask) ||
+            compileTask.taskDependencies.getDependencies(compileTask).contains(downloadTask),
+            "tailwindCompile should depend on tailwindDownload"
+        )
+    }
 }

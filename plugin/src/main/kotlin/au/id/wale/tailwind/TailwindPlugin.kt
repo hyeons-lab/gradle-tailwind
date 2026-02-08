@@ -1,5 +1,5 @@
 /**
- *    Copyright 2023-present Duale Siad
+ *    Copyright 2023-2026 Duale Siad
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -23,9 +23,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.*
 import kotlin.io.path.createDirectories
-import kotlin.io.path.createDirectory
 import kotlin.io.path.exists
 
 class TailwindPlugin : Plugin<Project> {
@@ -37,19 +35,29 @@ class TailwindPlugin : Plugin<Project> {
     override fun apply(project: Project) {
         val extension = project.extensions.create("tailwind", TailwindExtension::class.java)
 
-        val cacheDirectory: Path = Optional.ofNullable(project.findProperty("au.id.wale.tailwind.cache.dir") as String?)
-            .map(Paths::get)
-            .orElseGet {
-                project.gradle
-                    .gradleUserHomeDir
-                    .toPath()
-                    .resolve("caches")
-                    .resolve("au.id.wale.tailwind")
-            }
+        // Use Kotlin nullable types instead of Java Optional
+        val cacheDirectory: Path = (project.findProperty("au.id.wale.tailwind.cache.dir") as? String)
+            ?.let { Paths.get(it) }
+            ?: project.gradle
+                .gradleUserHomeDir
+                .toPath()
+                .resolve("caches")
+                .resolve("au.id.wale.tailwind")
 
-        if (!cacheDirectory.exists()) cacheDirectory.createDirectories()
+        if (!cacheDirectory.exists()) {
+            cacheDirectory.createDirectories()
+        }
 
-        project.tasks.register("tailwindDownload", TailwindDownloadTask::class.java) {
+        // Validate cache directory is writable
+        if (!cacheDirectory.toFile().canWrite()) {
+            throw org.gradle.api.GradleException(
+                "Cache directory is not writable: ${cacheDirectory.toAbsolutePath()}\n" +
+                "Please check file permissions or specify a different cache directory using:\n" +
+                "gradle.properties: au.id.wale.tailwind.cache.dir=/path/to/writable/dir"
+            )
+        }
+
+        val downloadTask = project.tasks.register("tailwindDownload", TailwindDownloadTask::class.java) {
             it.cacheDir.set(cacheDirectory)
             it.version.set(extension.version)
         }
@@ -58,6 +66,7 @@ class TailwindPlugin : Plugin<Project> {
             it.configPath.set(extension.configPath)
             it.version.set(extension.version)
             it.cacheDir.set(cacheDirectory)
+            it.dependsOn(downloadTask)
         }
 
         project.tasks.register("tailwindCompile", TailwindCompileTask::class.java) {
@@ -66,6 +75,7 @@ class TailwindPlugin : Plugin<Project> {
             it.input.set(extension.input)
             it.output.set(extension.output)
             it.cacheDir.set(cacheDirectory)
+            it.dependsOn(downloadTask)
         }
     }
 }

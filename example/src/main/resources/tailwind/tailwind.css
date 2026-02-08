@@ -1,3 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Tailwind v4 CSS-based theme configuration example */
+@theme {
+  --color-primary: #3b82f6;
+  --color-secondary: #8b5cf6;
+}

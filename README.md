@@ -7,8 +7,8 @@
 
 ## How To Use
 ### Requirements
-- Gradle 6+
-- Tailwind 3.0.3+
+- Gradle 7.4+
+- Tailwind 3.0.3+ (v4.x supported)
 
 ### Plugin Configuration
 The plugin configuration is simple, just see the following section for the relevant DSL for your project:
@@ -23,8 +23,8 @@ plugins {
 And configure your Tailwind application as desired, like so:
 ```groovy
 tailwind {
-    version = "3.3.3"
-    configPath = "src/main/resources"
+    version = "4.1.0"
+    configPath = "src/main/resources"  // Optional for v4; required for v3
     input = "src/main/resources/tailwind/tailwind.css"
     output = "src/main/resources/css/example.css"
 }
@@ -40,8 +40,8 @@ And configure your Tailwind application as desired, like so:
 - Gradle <8.1
     ```kts
     tailwind {
-        version.set("3.3.3")
-        configPath.set("src/main/resources")
+        version.set("4.1.0")
+        configPath.set("src/main/resources")  // Optional for v4; required for v3
         input.set("src/main/resources/tailwind/tailwind.css")
         output.set("src/main/resources/css/example.css")
     }
@@ -49,17 +49,30 @@ And configure your Tailwind application as desired, like so:
 - Gradle >8.1
     ```kotlin
     tailwind {
-        version = "3.3.3"
-        configPath = "src/main/resources"
+        version = "4.1.0"
+        configPath = "src/main/resources"  // Optional for v4; required for v3
         input = "src/main/resources/tailwind/tailwind.css"
         output = "src/main/resources/css/example.css"
     }
     ```
 
+### Tailwind CSS v4 Support
+
+This plugin supports both Tailwind CSS v3 and v4.
+
+**Tailwind v4** uses a CSS-based configuration system instead of `tailwind.config.js`. When using v4:
+- The `configPath` property is **optional** - if not set or if `tailwind.config.js` doesn't exist, the plugin will use CSS-based configuration
+- Configure your theme directly in your CSS file using `@theme` and other v4 directives
+- See the [Tailwind v4 documentation](https://tailwindcss.com/blog/tailwindcss-v4) for details on CSS-based configuration
+
+**Tailwind v3** uses JavaScript configuration:
+- Set `configPath` to the directory containing your `tailwind.config.js`
+- The plugin will automatically use the config file if it exists
+
 ### Available Tasks
-- `:tailwindDownload` - Downloads the TailwindCSS binary passed through from the config. Automatically run if the version or the cache folder cannot be found.(and on first run)
-- `:tailwindInit` - Initialises the `tailwind.config.js` file with the input and output provided in the config.
-- `:tailwindCompile` - Compiles the  given Tailwind PostCSS file to the path provided in `output`.
+- `:tailwindDownload` - Downloads the TailwindCSS binary for the configured version. Automatically runs before compile/init tasks if the binary is missing. Includes SHA256 checksum verification for security.
+- `:tailwindInit` - Initialises the `tailwind.config.js` file (for Tailwind v3) with the input and output provided in the config.
+- `:tailwindCompile` - Compiles the given Tailwind CSS file to the path provided in `output`. Automatically downloads the binary if needed.
 
 ### Example
 There is a working example containing a rudimentary Tailwind project. To compile the CSS and view the HTML properly, run the following task:

@@ -1,5 +1,5 @@
 /**
- *    Copyright 2023-present Duale Siad
+ *    Copyright 2023-2026 Duale Siad
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -16,29 +16,46 @@
 
 package au.id.wale.tailwind.platform
 
-import org.gradle.internal.os.OperatingSystem
+import org.gradle.api.GradleException
 
 open class TailwindPlatform {
     companion object {
-        val platformOS: TailwindOS
-            get() {
-                return when (OperatingSystem.current()) {
-                    OperatingSystem.MAC_OS -> TailwindOS.MAC
-                    OperatingSystem.LINUX -> TailwindOS.LINUX
-                    OperatingSystem.WINDOWS -> TailwindOS.WINDOWS
-                    else -> TailwindOS.UNKNOWN
-                }
+        // Cache platform detection results to avoid repeated System.getProperty() calls
+        private val _platformOS: TailwindOS by lazy {
+            val osName = System.getProperty("os.name")?.lowercase()
+                ?: throw GradleException("Unable to detect operating system (os.name property is null)")
+
+            when {
+                osName.contains("mac") || osName.contains("darwin") -> TailwindOS.MAC
+                osName.contains("linux") -> TailwindOS.LINUX
+                osName.contains("windows") -> TailwindOS.WINDOWS
+                else -> throw GradleException(
+                    "Unsupported operating system: $osName\n" +
+                    "TailwindCSS standalone binary is only available for macOS, Linux, and Windows.\n" +
+                    "Detected OS: $osName"
+                )
             }
+        }
+
+        private val _platformArch: TailwindArch by lazy {
+            val arch = System.getProperty("os.arch")
+            when (arch) {
+                "x86_64", "amd64" -> TailwindArch.X86_64
+                "aarch32", "arm" -> TailwindArch.AARCH32
+                "aarch64", "arm64" -> TailwindArch.AARCH64
+                else -> throw GradleException(
+                    "Unsupported architecture: $arch\n" +
+                    "TailwindCSS standalone binary is only available for x86_64, ARM32, and ARM64 architectures.\n" +
+                    "Detected architecture: $arch"
+                )
+            }
+        }
+
+        val platformOS: TailwindOS
+            get() = _platformOS
 
         val platformArch: TailwindArch
-            get() {
-                return when (System.getProperty("os.arch")) {
-                    "x86_64", "amd64" -> TailwindArch.X86_64
-                    "aarch32", "arm" -> TailwindArch.AARCH32
-                    "aarch64", "arm64" -> TailwindArch.AARCH64
-                    else -> TailwindArch.UNKNOWN
-                }
-            }
+            get() = _platformArch
     }
 
     /**
@@ -49,9 +66,5 @@ open class TailwindPlatform {
         val osName = platformOS.binaryOS
         val format = "tailwindcss-$osName-$archName"
         return if (platformOS == TailwindOS.WINDOWS) "$format.exe" else format
-    }
-
-    fun formatFolder(version: String): String {
-        return "tailwindcss-$version-${platformOS.binaryOS}"
     }
 }
