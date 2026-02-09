@@ -17,22 +17,22 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    kotlin("jvm") version "2.3.0"
+    alias(libs.plugins.kotlinJvm)
     id("java-gradle-plugin")
-    id("com.gradle.plugin-publish") version "2.0.0"
-    id("com.vanniktech.maven.publish") version "0.35.0"
+    alias(libs.plugins.gradlePluginPublish)
+    alias(libs.plugins.vanniktechMavenPublish)
     signing
 }
 
 group = "com.hyeons-lab"
-version = "0.3.0"
+version = libs.versions.artifactVersion.get()
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
+    testImplementation(libs.kotlin.test)
 }
 
 tasks.test {

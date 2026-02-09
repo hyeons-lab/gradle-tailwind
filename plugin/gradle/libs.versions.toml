@@ -1,0 +1,16 @@
+[versions]
+# Plugin artifact version
+artifactVersion = "0.3.0-SNAPSHOT"
+
+# Build dependencies
+kotlin = "2.3.0"
+gradle-plugin-publish = "2.0.0"
+vanniktech-maven-publish = "0.35.0"
+
+[plugins]
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+gradlePluginPublish = { id = "com.gradle.plugin-publish", version.ref = "gradle-plugin-publish" }
+vanniktechMavenPublish = { id = "com.vanniktech.maven.publish", version.ref = "vanniktech-maven-publish" }
+
+[libraries]
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
