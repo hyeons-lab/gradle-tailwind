@@ -20,6 +20,8 @@ plugins {
     kotlin("jvm") version "2.3.0"
     id("java-gradle-plugin")
     id("com.gradle.plugin-publish") version "2.0.0"
+    id("com.vanniktech.maven.publish") version "0.35.0"
+    signing
 }
 
 group = "com.hyeons-lab"
@@ -60,5 +62,56 @@ gradlePlugin {
             tags.set(listOf("tailwind", "css", "web", "frontend"))
             implementationClass = "com.hyeonslab.tailwind.TailwindPlugin"
         }
+    }
+}
+
+mavenPublishing {
+    // Target the new Sonatype Central Portal
+    publishToMavenCentral()
+
+    // Coordinates for this module
+    coordinates(
+        groupId = group.toString(),
+        artifactId = "gradle-tailwind",
+        version = version.toString()
+    )
+
+    pom {
+        name.set("Gradle Tailwind Plugin")
+        description.set("A Gradle plugin to manage TailwindCSS files with support for Tailwind v3 and v4")
+        url.set("https://github.com/hyeons-lab/gradle-tailwind")
+
+        licenses {
+            license {
+                name.set("The Apache License, Version 2.0")
+                url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+            }
+        }
+
+        scm {
+            url.set("https://github.com/hyeons-lab/gradle-tailwind")
+            connection.set("scm:git:git://github.com/hyeons-lab/gradle-tailwind.git")
+            developerConnection.set("scm:git:ssh://git@github.com/hyeons-lab/gradle-tailwind.git")
+        }
+
+        developers {
+            developer {
+                id.set("hyeons-lab")
+                name.set("Hyeon's Lab")
+                organization.set("Hyeon's Lab")
+                organizationUrl.set("https://github.com/hyeons-lab")
+            }
+        }
+    }
+
+    // Sign all publications (only if credentials are available)
+    signAllPublications()
+}
+
+// Configure signing to be optional when credentials are not available
+signing {
+    setRequired {
+        // Only require signing when publishing to Maven Central (not for Maven Local)
+        gradle.taskGraph.allTasks.any { it.name.contains("ToMavenCentral") }
     }
 }
