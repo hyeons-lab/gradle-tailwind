@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package au.id.wale.tailwind.platform
+package com.hyeonslab.tailwind.platform
 
 enum class TailwindArch(val binaryArch: String) {
     X86_64("x64"),

@@ -1,7 +1,7 @@
-package au.id.wale.tailwind.test
+package com.hyeonslab.tailwind.test
 
-import au.id.wale.tailwind.TailwindExtension
-import au.id.wale.tailwind.tasks.TailwindCompileTask
+import com.hyeonslab.tailwind.TailwindExtension
+import com.hyeonslab.tailwind.tasks.TailwindCompileTask
 import org.gradle.api.GradleException
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.BeforeEach
@@ -24,7 +24,7 @@ class TailwindCompileTaskTest {
     @Test
     fun `compile task fails when version is not set`() {
         val project = ProjectBuilder.builder().withProjectDir(tempDir).build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
         val task = project.tasks.getByName("tailwindCompile") as TailwindCompileTask
 
@@ -46,7 +46,7 @@ class TailwindCompileTaskTest {
     @Test
     fun `compile task fails when input is not set`() {
         val project = ProjectBuilder.builder().withProjectDir(tempDir).build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
         val task = project.tasks.getByName("tailwindCompile") as TailwindCompileTask
 
@@ -68,7 +68,7 @@ class TailwindCompileTaskTest {
     @Test
     fun `compile task fails when output is not set`() {
         val project = ProjectBuilder.builder().withProjectDir(tempDir).build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
         val task = project.tasks.getByName("tailwindCompile") as TailwindCompileTask
 
@@ -90,7 +90,7 @@ class TailwindCompileTaskTest {
     @Test
     fun `compile task works without configPath for Tailwind v4`() {
         val project = ProjectBuilder.builder().withProjectDir(tempDir).build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
         // Create input file
         val inputDir = File(tempDir, "src/main/css")
@@ -122,7 +122,7 @@ class TailwindCompileTaskTest {
     @Test
     fun `compile task fails when input file does not exist`() {
         val project = ProjectBuilder.builder().withProjectDir(tempDir).build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
         val task = project.tasks.getByName("tailwindCompile") as TailwindCompileTask
 
@@ -145,7 +145,7 @@ class TailwindCompileTaskTest {
     @Test
     fun `compile task fails with invalid version format`() {
         val project = ProjectBuilder.builder().withProjectDir(tempDir).build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
         val task = project.tasks.getByName("tailwindCompile") as TailwindCompileTask
 

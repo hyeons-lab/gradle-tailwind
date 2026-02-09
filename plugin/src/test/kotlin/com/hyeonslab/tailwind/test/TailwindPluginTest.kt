@@ -1,8 +1,8 @@
-package au.id.wale.tailwind.test
+package com.hyeonslab.tailwind.test
 
-import au.id.wale.tailwind.TailwindExtension
-import au.id.wale.tailwind.tasks.TailwindDownloadTask
-import au.id.wale.tailwind.tasks.TailwindInitTask
+import com.hyeonslab.tailwind.TailwindExtension
+import com.hyeonslab.tailwind.tasks.TailwindDownloadTask
+import com.hyeonslab.tailwind.tasks.TailwindInitTask
 import org.gradle.testfixtures.ProjectBuilder
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.BeforeEach
@@ -16,7 +16,7 @@ class TailwindPluginTest {
     @Test
     fun `tailwindDownload task is applied correctly to the project`() {
         val project = ProjectBuilder.builder().build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
         assert(project.tasks.getByName("tailwindDownload") is TailwindDownloadTask)
     }
@@ -24,7 +24,7 @@ class TailwindPluginTest {
     @Test
     fun `tailwindInit task is applied correctly to the project`() {
         val project = ProjectBuilder.builder().build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
         assert(project.tasks.getByName("tailwindInit") is TailwindInitTask)
     }
@@ -32,7 +32,7 @@ class TailwindPluginTest {
     @Test
     fun `tailwindInit task depends on tailwindDownload`() {
         val project = ProjectBuilder.builder().build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
         val initTask = project.tasks.getByName("tailwindInit")
         val downloadTask = project.tasks.getByName("tailwindDownload")
@@ -47,7 +47,7 @@ class TailwindPluginTest {
     @Test
     fun `tailwindCompile task depends on tailwindDownload`() {
         val project = ProjectBuilder.builder().build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
         val compileTask = project.tasks.getByName("tailwindCompile")
         val downloadTask = project.tasks.getByName("tailwindDownload")

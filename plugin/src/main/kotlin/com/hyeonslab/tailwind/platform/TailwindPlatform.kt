@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package au.id.wale.tailwind.platform
+package com.hyeonslab.tailwind.platform
 
 import org.gradle.api.GradleException
 

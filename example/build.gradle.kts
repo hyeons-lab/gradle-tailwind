@@ -1,4 +1,4 @@
-import au.id.wale.tailwind.TailwindExtension
+import com.hyeonslab.tailwind.TailwindExtension
 
 /**
  *    Copyright 2023-present Duale Siad
@@ -18,7 +18,7 @@ import au.id.wale.tailwind.TailwindExtension
 
 plugins {
     java
-    id("au.id.wale.tailwind")
+    id("com.hyeons-lab.tailwind")
 }
 
 tailwind {

@@ -1,7 +1,7 @@
-package au.id.wale.tailwind.test
+package com.hyeonslab.tailwind.test
 
-import au.id.wale.tailwind.TailwindExtension
-import au.id.wale.tailwind.tasks.TailwindInitTask
+import com.hyeonslab.tailwind.TailwindExtension
+import com.hyeonslab.tailwind.tasks.TailwindInitTask
 import org.gradle.api.GradleException
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.BeforeEach
@@ -24,7 +24,7 @@ class TailwindInitTaskTest {
     @Test
     fun `init task fails when version is not set`() {
         val project = ProjectBuilder.builder().withProjectDir(tempDir).build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
         val task = project.tasks.getByName("tailwindInit") as TailwindInitTask
 
@@ -44,7 +44,7 @@ class TailwindInitTaskTest {
     @Test
     fun `init task fails when configPath is not set`() {
         val project = ProjectBuilder.builder().withProjectDir(tempDir).build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
         val task = project.tasks.getByName("tailwindInit") as TailwindInitTask
 
@@ -64,7 +64,7 @@ class TailwindInitTaskTest {
     @Test
     fun `init task fails when config directory does not exist`() {
         val project = ProjectBuilder.builder().withProjectDir(tempDir).build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
         val task = project.tasks.getByName("tailwindInit") as TailwindInitTask
 
@@ -85,7 +85,7 @@ class TailwindInitTaskTest {
     @Test
     fun `init task fails when config path is a file not a directory`() {
         val project = ProjectBuilder.builder().withProjectDir(tempDir).build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
         // Create a file instead of a directory
         val configFile = File(tempDir, "config.txt")
@@ -110,7 +110,7 @@ class TailwindInitTaskTest {
     @Test
     fun `init task fails with invalid version format`() {
         val project = ProjectBuilder.builder().withProjectDir(tempDir).build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
         // Create config directory
         val configDir = File(tempDir, "config")

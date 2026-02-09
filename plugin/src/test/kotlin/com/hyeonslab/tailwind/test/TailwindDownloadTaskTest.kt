@@ -1,6 +1,6 @@
-package au.id.wale.tailwind.test
+package com.hyeonslab.tailwind.test
 
-import au.id.wale.tailwind.tasks.TailwindDownloadTask
+import com.hyeonslab.tailwind.tasks.TailwindDownloadTask
 import org.gradle.api.GradleException
 import org.gradle.testfixtures.ProjectBuilder
 import org.junit.jupiter.api.BeforeEach
@@ -84,9 +84,9 @@ class TailwindDownloadTaskTest {
     @Test
     fun `download task fails when version is not set`() {
         val project = ProjectBuilder.builder().withProjectDir(tempDir).build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
-        val task = project.tasks.getByName("tailwindDownload") as au.id.wale.tailwind.tasks.TailwindDownloadTask
+        val task = project.tasks.getByName("tailwindDownload") as com.hyeonslab.tailwind.tasks.TailwindDownloadTask
 
         val exception = assertFailsWith<org.gradle.api.GradleException> {
             task.downloadTailwind()
@@ -101,11 +101,11 @@ class TailwindDownloadTaskTest {
     @Test
     fun `download task fails with invalid version format`() {
         val project = ProjectBuilder.builder().withProjectDir(tempDir).build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
-        val task = project.tasks.getByName("tailwindDownload") as au.id.wale.tailwind.tasks.TailwindDownloadTask
+        val task = project.tasks.getByName("tailwindDownload") as com.hyeonslab.tailwind.tasks.TailwindDownloadTask
 
-        val extension = project.extensions.getByType(au.id.wale.tailwind.TailwindExtension::class.java)
+        val extension = project.extensions.getByType(com.hyeonslab.tailwind.TailwindExtension::class.java)
         extension.version.set("invalid")
 
         val exception = assertFailsWith<org.gradle.api.GradleException> {
@@ -121,11 +121,11 @@ class TailwindDownloadTaskTest {
     @Test
     fun `download task fails with empty version`() {
         val project = ProjectBuilder.builder().withProjectDir(tempDir).build()
-        project.pluginManager.apply("au.id.wale.tailwind")
+        project.pluginManager.apply("com.hyeons-lab.tailwind")
 
-        val task = project.tasks.getByName("tailwindDownload") as au.id.wale.tailwind.tasks.TailwindDownloadTask
+        val task = project.tasks.getByName("tailwindDownload") as com.hyeonslab.tailwind.tasks.TailwindDownloadTask
 
-        val extension = project.extensions.getByType(au.id.wale.tailwind.TailwindExtension::class.java)
+        val extension = project.extensions.getByType(com.hyeonslab.tailwind.TailwindExtension::class.java)
         extension.version.set("")
 
         val exception = assertFailsWith<org.gradle.api.GradleException> {

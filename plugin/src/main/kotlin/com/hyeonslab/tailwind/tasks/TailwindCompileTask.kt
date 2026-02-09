@@ -1,4 +1,4 @@
-package au.id.wale.tailwind.tasks
+package com.hyeonslab.tailwind.tasks
 
 import org.gradle.api.GradleException
 import org.gradle.api.file.RegularFile

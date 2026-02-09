@@ -14,11 +14,11 @@
  *    limitations under the License.
  */
 
-package au.id.wale.tailwind
+package com.hyeonslab.tailwind
 
-import au.id.wale.tailwind.tasks.TailwindCompileTask
-import au.id.wale.tailwind.tasks.TailwindDownloadTask
-import au.id.wale.tailwind.tasks.TailwindInitTask
+import com.hyeonslab.tailwind.tasks.TailwindCompileTask
+import com.hyeonslab.tailwind.tasks.TailwindDownloadTask
+import com.hyeonslab.tailwind.tasks.TailwindInitTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import java.nio.file.Path
@@ -36,13 +36,13 @@ class TailwindPlugin : Plugin<Project> {
         val extension = project.extensions.create("tailwind", TailwindExtension::class.java)
 
         // Use Kotlin nullable types instead of Java Optional
-        val cacheDirectory: Path = (project.findProperty("au.id.wale.tailwind.cache.dir") as? String)
+        val cacheDirectory: Path = (project.findProperty("com.hyeons-lab.tailwind.cache.dir") as? String)
             ?.let { Paths.get(it) }
             ?: project.gradle
                 .gradleUserHomeDir
                 .toPath()
                 .resolve("caches")
-                .resolve("au.id.wale.tailwind")
+                .resolve("com.hyeons-lab.tailwind")
 
         if (!cacheDirectory.exists()) {
             cacheDirectory.createDirectories()
@@ -53,7 +53,7 @@ class TailwindPlugin : Plugin<Project> {
             throw org.gradle.api.GradleException(
                 "Cache directory is not writable: ${cacheDirectory.toAbsolutePath()}\n" +
                 "Please check file permissions or specify a different cache directory using:\n" +
-                "gradle.properties: au.id.wale.tailwind.cache.dir=/path/to/writable/dir"
+                "gradle.properties: com.hyeons-lab.tailwind.cache.dir=/path/to/writable/dir"
             )
         }
 

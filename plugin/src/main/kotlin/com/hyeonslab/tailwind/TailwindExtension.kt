@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package au.id.wale.tailwind
+package com.hyeonslab.tailwind
 
 import org.gradle.api.Project
 import org.gradle.api.file.RegularFile

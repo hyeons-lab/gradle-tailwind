@@ -1,8 +1,8 @@
-package au.id.wale.tailwind.test
+package com.hyeonslab.tailwind.test
 
-import au.id.wale.tailwind.platform.TailwindArch
-import au.id.wale.tailwind.platform.TailwindOS
-import au.id.wale.tailwind.platform.TailwindPlatform
+import com.hyeonslab.tailwind.platform.TailwindArch
+import com.hyeonslab.tailwind.platform.TailwindOS
+import com.hyeonslab.tailwind.platform.TailwindPlatform
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

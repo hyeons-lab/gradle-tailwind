@@ -14,11 +14,11 @@
  *    limitations under the License.
  */
 
-package au.id.wale.tailwind.tasks
+package com.hyeonslab.tailwind.tasks
 
-import au.id.wale.tailwind.TailwindPlugin
-import au.id.wale.tailwind.platform.TailwindOS
-import au.id.wale.tailwind.platform.TailwindPlatform
+import com.hyeonslab.tailwind.TailwindPlugin
+import com.hyeonslab.tailwind.platform.TailwindOS
+import com.hyeonslab.tailwind.platform.TailwindPlatform
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.file.RegularFile

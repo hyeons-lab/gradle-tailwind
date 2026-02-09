@@ -22,8 +22,8 @@ plugins {
     id("com.gradle.plugin-publish") version "2.0.0"
 }
 
-group = "au.id.wale"
-version = "0.2.0"
+group = "com.hyeons-lab"
+version = "0.3.0"
 
 repositories {
     mavenCentral()
@@ -50,15 +50,15 @@ java {
 }
 
 gradlePlugin {
-    website.set("https://github.com/wale/gradle-tailwind")
-    vcsUrl.set("https://github.com/wale/gradle-tailwind")
+    website.set("https://github.com/hyeons-lab/gradle-tailwind")
+    vcsUrl.set("https://github.com/hyeons-lab/gradle-tailwind")
     plugins {
         create("tailwind") {
-            id = "au.id.wale.tailwind"
+            id = "com.hyeons-lab.tailwind"
             displayName = "TailwindCSS Gradle Plugin"
             description = "A Gradle plugin to manage TailwindCSS files."
             tags.set(listOf("tailwind", "css", "web", "frontend"))
-            implementationClass = "au.id.wale.tailwind.TailwindPlugin"
+            implementationClass = "com.hyeonslab.tailwind.TailwindPlugin"
         }
     }
 }

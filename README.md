@@ -1,4 +1,4 @@
-![Gradle Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/au.id.wale.tailwind)
+![Gradle Plugin Portal](https://img.shields.io/gradle-plugin-portal/v/com.hyeons-lab.tailwind)
 # `gradle-tailwind`
 `gradle-tailwind` is a plugin for the [Gradle](https://gradle.org) build manager for the [TailwindCSS](https://tailwindcss.com) framework.
 
@@ -17,7 +17,7 @@ The plugin configuration is simple, just see the following section for the relev
 First, add your plugin like so:
 ```groovy
 plugins {
-    id "au.id.wale.tailwind" version "0.2.0"
+    id "com.hyeons-lab.tailwind" version "0.3.0"
 }
 ```
 And configure your Tailwind application as desired, like so:
@@ -33,7 +33,7 @@ tailwind {
 First, add your plugin like so:
 ```kts
 plugins {
-    id("au.id.wale.tailwind") version "0.1.0"
+    id("com.hyeons-lab.tailwind") version "0.3.0"
 }
 ```
 And configure your Tailwind application as desired, like so:
