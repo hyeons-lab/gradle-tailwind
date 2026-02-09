@@ -1,6 +1,6 @@
 [versions]
 # Plugin artifact version
-artifactVersion = "0.3.0-SNAPSHOT"
+artifactVersion = "0.3.0"
 
 # Build dependencies
 kotlin = "2.3.0"
